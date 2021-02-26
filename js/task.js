@@ -149,6 +149,14 @@ document.addEventListener('keydown', (event) => {
   }
 })
 
+refs.overlay.addEventListener('click', onOverlayClick)
+
+function onOverlayClick(event) {
+  if (event.target === event.currentTarget) {
+    closeModal();
+  }
+}
+
 function isOpenModal() {
   return !refs.modal.classList.contains('is-open')
 }
@@ -168,10 +176,5 @@ function showNextImage(direction) {
   setImage(urlOriginal);
 }
 
-refs.overlay.addEventListener('click', event => {
-  if (event.target === event.currentTarget) {
-    closeModal();
-  }
 
-})
 
