@@ -111,46 +111,6 @@ function setImage(url) {
   refs.modalImg.setAttribute("src", url);
 }
 
-refs.gallery.addEventListener('click', (event) => {
-  event.preventDefault();
-
-  if (event.target.nodeName !== 'IMG') return;
-
-  currentIndex = event.target.dataset.index;
-
-  const urlOriginal = event.target.dataset.source;
-  setImage(urlOriginal);
-  openModal();
-})
-
-refs.modalBtn.addEventListener('click', () => {
-  closeModal();
-
-})
-
-document.addEventListener('keydown', (event) => {
-  if (isOpenModal()) return
-
-  switch (event.code) {
-    case 'Escape':
-      closeModal()
-      break;
-
-    case 'ArrowRight':
-      showNextImage('right')
-      break;
-
-    case 'ArrowLeft':
-      showNextImage('left')
-      break;
-
-    default:
-      return;
-  }
-})
-
-refs.overlay.addEventListener('click', onOverlayClick)
-
 function onOverlayClick(event) {
   if (event.target === event.currentTarget) {
     closeModal();
@@ -175,6 +135,50 @@ function showNextImage(direction) {
   const urlOriginal = images[currentIndex].original;
   setImage(urlOriginal);
 }
+
+refs.gallery.addEventListener('click', (event) => {
+  event.preventDefault();
+
+  if (event.target.nodeName !== 'IMG') return;
+
+  currentIndex = event.target.dataset.index;
+
+  const urlOriginal = event.target.dataset.source;
+  setImage(urlOriginal);
+  openModal();
+})
+
+refs.modalBtn.addEventListener('click', () => {
+  closeModal();
+
+})
+
+refs.overlay.addEventListener('click', onOverlayClick)
+
+document.addEventListener('keydown', (event) => {
+  if (isOpenModal()) return
+
+  switch (event.code) {
+    case 'Escape':
+      closeModal()
+      break;
+
+    case 'ArrowRight':
+      showNextImage('right')
+      break;
+
+    case 'ArrowLeft':
+      showNextImage('left')
+      break;
+
+    default:
+      return;
+  }
+})
+
+
+
+
 
 
 
