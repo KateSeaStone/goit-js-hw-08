@@ -71,16 +71,19 @@ const refs = {
   modal: document.querySelector('div.lightbox'),
   modalImg: document.querySelector('img.lightbox__image'),
   modalBtn: document.querySelector('button[data-action="close-lightbox"]'),
-
-
+  overlay: document.querySelector('div.lightbox__overlay'),
 }
 
-images.forEach((image) => {
+let currentIndex = 0;
+
+images.forEach((image, index) => {
   const { preview, original, description } = image;
   const imgRef = document.createElement('img');
   imgRef.setAttribute("src", preview);
   imgRef.setAttribute("data-source", original);
   imgRef.setAttribute("alt", description);
+  imgRef.setAttribute("data-index", index);
+
   imgRef.classList.add("gallery__image");
 
   const anchorRef = document.createElement('a');
@@ -101,6 +104,7 @@ function openModal() {
 
 function closeModal() {
   refs.modal.classList.remove('is-open');
+  setImage('');
 }
 
 function setImage(url) {
@@ -109,7 +113,10 @@ function setImage(url) {
 
 refs.gallery.addEventListener('click', (event) => {
   event.preventDefault();
+
   if (event.target.nodeName !== 'IMG') return;
+
+  currentIndex = event.target.dataset.index;
 
   const urlOriginal = event.target.dataset.source;
   setImage(urlOriginal);
@@ -118,5 +125,53 @@ refs.gallery.addEventListener('click', (event) => {
 
 refs.modalBtn.addEventListener('click', () => {
   closeModal();
-  setImage('');
+
 })
+
+document.addEventListener('keydown', (event) => {
+  if (isOpenModal()) return
+
+  switch (event.code) {
+    case 'Escape':
+      closeModal()
+      break;
+
+    case 'ArrowRight':
+      showNextImage('right')
+      break;
+
+    case 'ArrowLeft':
+      showNextImage('left')
+      break;
+
+    default:
+      return;
+  }
+})
+
+function isOpenModal() {
+  return !refs.modal.classList.contains('is-open')
+}
+
+function showNextImage(direction) {
+  direction === 'right' ? currentIndex++ : currentIndex--;
+
+  if (currentIndex >= images.length) {
+    currentIndex = 0
+  }
+
+  if (currentIndex < 0) {
+    currentIndex = images.length - 1;
+  }
+
+  const urlOriginal = images[currentIndex].original;
+  setImage(urlOriginal);
+}
+
+refs.overlay.addEventListener('click', event => {
+  if (event.target === event.currentTarget) {
+    closeModal();
+  }
+
+})
+
