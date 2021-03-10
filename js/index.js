@@ -75,9 +75,7 @@ function onOverlayClick(event) {
 }
 
 function isOpenModal() {
-  return !refs.modal.classList.contains('is-open')
-  //return refs.modal.classList.contains('is-open') и тогда проверяйте if (!isOpenModal()) return
-
+  return refs.modal.classList.contains('is-open')
 }
 
 function showNextImage(direction) {
@@ -115,7 +113,7 @@ refs.modalBtn.addEventListener('click', () => {
 refs.overlay.addEventListener('click', onOverlayClick)
 
 document.addEventListener('keydown', (event) => {
-  if (isOpenModal()) return
+  if (!isOpenModal()) return
 
   switch (event.code) {
     case 'Escape':
